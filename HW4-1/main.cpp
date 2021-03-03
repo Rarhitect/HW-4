@@ -9,6 +9,7 @@
 #include <random>
 #include <vector>
 #include <algorithm>
+#include <cmath>
 
 void print_vector(std::vector <int> vector)
 {
@@ -65,6 +66,7 @@ int main(int argc, const char * argv[])
     //удалим дубликаты П1
     std::sort(std::begin(P1), std::end(P1));
     P1.erase(std::unique(std::begin(P1), std::end(P1)), std::end(P1));
+    std::cout << "Deleting dublicates from P1:" << std::endl;
     print_vector(P1);
     
     //подсчитаем количество четных чисел в П1
@@ -81,6 +83,27 @@ int main(int argc, const char * argv[])
         std::cout << "No prime numbers" << std::endl;
     else
         std::cout << "There is at least one prime num: " << *prime_num << std::endl;
+    
+    //заменим все числа в П1 их квадратами
+    std::cout << "Let's displace numbers of P1 with their squares:" << std::endl;
+    std::transform(std::begin(P1), std::end(P1), std::begin(P1), [](auto x){return std::pow(x, 2);});
+    print_vector(P1);
+    
+    //создадим последовательность П2 из N случайных чисел
+    std::vector<int> P2(std::size(P1), 0);
+    std::cout << "Creating a new sequence P2:" << std::endl;
+    std::mt19937 mersenne(rd());
+    std::uniform_int_distribution<> uid(1, 10);
+    for (auto &i: P2)
+    {
+        i = uid(mersenne);
+    }
+    print_vector(P2);
+    
+    //вычислим сумму чисел в П2
+    auto res = std::accumulate(std::begin(P2), std::end(P2), 0, [](int sum, int elem){return sum += elem;});
+    std::cout << "The summ of P2 nums = " << res << std::endl;
+    
     
     
     return 0;

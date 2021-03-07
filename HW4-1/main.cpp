@@ -10,36 +10,13 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <functional>
 
 void print_vector(std::vector <int> vector)
 {
     for (auto &i: vector)
         std::cout << i << " ";
     std::cout << std::endl;
-}
-
-bool predicate (int a)
-{
-    if (a / 2 == 0)
-        return 1;
-    else
-        return 0;
-}
-
-bool is_prime(int x)
-{
-    std::vector < int > v;
-    if (x == 1)
-    {
-        return false;
-    }
-    for (auto i = 2; i < x; ++i)
-    {
-        v.push_back(x % i);
-    }
-    auto count_of_zeroes = std::count_if(std::begin(v), std::end(v), [](auto x){return x == 0;});
-    
-    return (count_of_zeroes == 0);
 }
 
 int main(int argc, const char * argv[])
@@ -84,7 +61,21 @@ int main(int argc, const char * argv[])
     std::cout << std::endl;
     
     //#7. попробуем найти хотя бы одно простое число в П1
-    auto prime_num = std::find_if(std::begin(P1), std::end(P1), [](auto x){return is_prime(x);});
+    auto prime_num = std::find_if(std::begin(P1), std::end(P1), [](int x)
+    {
+        std::vector < int > v;
+        if (x == 1)
+        {
+            return false;
+        }
+        for (auto i = 2; i < x; ++i)
+        {
+            v.push_back(x % i);
+        }
+        auto count_of_zeroes = std::count_if(std::begin(v), std::end(v), [](auto x){return x == 0;});
+        
+        return (count_of_zeroes == 0);
+    });
     if (prime_num == std::end(P1))
         std::cout << "No prime numbers" << std::endl;
     else
